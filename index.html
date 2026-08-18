@@ -85,6 +85,11 @@
     font-size: clamp(1.7rem, 4.2vw, 2.45rem); line-height: 1.15;
     letter-spacing: -0.03em; font-weight: 700; margin: 0;
   }
+  .answer {
+    font-size: 1.9rem; font-weight: 700; letter-spacing: -0.025em;
+    color: var(--accent); margin: 1.5rem 0 1.6rem;
+  }
+  .path { font-size: .98rem; line-height: 1.5; }
   .panel {
     background: var(--panel); border: 1px solid var(--line);
     border-radius: 12px; padding: 1.4rem 1.6rem; margin: 1.6rem 0;
@@ -165,15 +170,16 @@
         <p class="big">If you&rsquo;re reading this,<br>it&rsquo;s not too late.</p>
       </div>
 
-      <p>Your texts are a graveyard of good intentions. Three unread from your sister. A
-      &ldquo;we should catch up&rdquo; from someone you genuinely like. A question you meant to
-      answer, which was four weekends ago now.</p>
+      <p>Your texts are full of good intentions. A message from your sister you meant to answer. A
+      &ldquo;we should catch up&rdquo; from someone you actually miss. A question you saw, planned to
+      reply to, and somehow left sitting there for four weeks.</p>
 
-      <p>You&rsquo;re not a bad friend. You just have two hundred conversations and no system.</p>
+      <p>You didn&rsquo;t decide to lose touch. Life just kept moving, and the conversation
+      disappeared beneath everything that came after it.</p>
 
-      <p><strong>RelationshipBuilder is a secretary for your text messages.</strong> It reads your
-      Messages history, keeps track of who&rsquo;s waiting on you, remembers what you were talking
-      about, and hands you one person at a time.</p>
+      <p><strong>RelationshipBuilder helps you pick those threads back up.</strong> It looks through
+      your Messages history, finds the conversations that may be worth returning to, reminds you what
+      you were talking about, and gives you one person at a time.</p>
 
       <p style="margin-top:1.9rem">
         <a class="dl" href="https://github.com/JustinSteinberg/relationshipbuilder-releases/releases/latest/download/relationshipBuilder.dmg">Download for Mac</a>
@@ -186,26 +192,30 @@
     <section id="features">
       <h2>What it does</h2>
 
-      <div class="feat"><b>Tells you who&rsquo;s waiting</b>
-      <span>Questions you never answered. Conversations that stopped halfway. The things buried under
-      four months of scrolling.</span></div>
+      <div class="feat"><b>Finds the conversations you left hanging</b>
+      <span>Questions you never answered. Conversations that stopped halfway. Messages you meant to
+      come back to and then lost beneath months of newer ones.</span></div>
 
-      <div class="feat"><b>Remembers the details</b>
-      <span>What they told you last time, and how long ago. So you don&rsquo;t have to open with
-      &ldquo;sorry, crazy week.&rdquo;</span></div>
+      <div class="feat"><b>Remembers where you left off</b>
+      <span>See what was going on in someone&rsquo;s life the last time you talked, what you
+      discussed, and how long it has been. You can continue the conversation instead of starting from
+      zero.</span></div>
 
-      <div class="feat"><b>Hands you something to say</b>
-      <span>A few things worth asking about. You write the actual words.</span></div>
+      <div class="feat"><b>Gives you something real to follow up on</b>
+      <span>RelationshipBuilder surfaces a few things worth asking about or coming back to. It gives
+      you context, not a script. What you actually say is still yours.</span></div>
 
-      <div class="feat"><b>Sends from here</b>
-      <span>It plugs into Messages. Type, send, done. Looks like any other text on their end.</span></div>
+      <div class="feat"><b>Sends through Messages</b>
+      <span>Write and send without switching apps or copying anything over. The message goes through
+      Messages normally and looks no different on the other person&rsquo;s end.</span></div>
 
-      <div class="feat"><b>One at a time</b>
-      <span>A card, not a list. Answer or skip, and the next one comes up. Two hundred names at once
-      is just guilt with a scrollbar.</span></div>
+      <div class="feat"><b>Shows you one person at a time</b>
+      <span>No giant backlog of neglected relationships. Answer, skip, or move on. The goal is to make
+      reconnecting easier, not turn your friendships into another inbox to clear.</span></div>
 
-      <div class="feat"><b>Drops the ones you don&rsquo;t need</b>
-      <span>Your dentist, your landlord, the group chat from 2019. One click and it stops asking.</span></div>
+      <div class="feat"><b>Learns who matters</b>
+      <span>Your dentist, landlord, old group chats, and other conversations you don&rsquo;t want
+      surfaced can be dismissed once and left alone.</span></div>
     </section>
 
     <hr>
@@ -213,27 +223,30 @@
     <section id="why">
       <h2>Why it works</h2>
 
-      <p>Two things researchers keep finding:</p>
+      <p>A couple of findings from psychology sit behind the idea.</p>
 
       <div class="finding">
-        <b>We regret what we didn&rsquo;t do.</b>
-        Mistakes sting at first. The things we never got around to stay with us longer, because the
-        reason we put them off stops making sense later.
+        <b>We tend to carry the things we never did.</b>
+        Mistakes can hurt more in the moment, but regrets about inaction often last longer. With time,
+        the reasons we had for not acting become less convincing, while the unanswered question of what
+        might have happened remains.
         <cite><a href="https://pubmed.ncbi.nlm.nih.gov/7965599/">Gilovich &amp; Medvec, 1994</a>,
         <a href="https://online.ucpress.edu/collabra/article/8/1/37122/190272/Revisiting-the-Temporal-Pattern-of-Regret-in">replicated 2022</a></cite>
       </div>
 
       <div class="finding">
-        <b>It means more to them than you think.</b>
-        In thirteen studies with almost six thousand people, a text out of the blue mattered more to
-        the person getting it than the sender expected. The longer the quiet, the bigger the surprise,
-        and the more it meant.
+        <b>Reaching out usually means more than we expect.</b>
+        Across thirteen experiments involving nearly six thousand people, researchers found that people
+        consistently underestimated how much someone would appreciate an unexpected message. The effect
+        was especially strong when the message came as more of a surprise.
         <cite><a href="https://www.apa.org/pubs/journals/releases/psp-pspi0000402.pdf">Liu, Rim, Min &amp; Min, Journal of Personality and Social Psychology, 2022</a></cite>
       </div>
 
-      <p>Put those together and you get the whole app. The texts you never sent are the ones
-      you&rsquo;ll think about later, and sending one is worth more than you&rsquo;d guess. The only
-      thing standing in the way is remembering, and that part a computer can do.</p>
+      <p>That is the idea behind RelationshipBuilder. We often want to reach out, underestimate what
+      the gesture might mean, and then simply forget.</p>
+
+      <p>A computer can&rsquo;t maintain your relationships for you. But it can remember what you meant
+      to come back to.</p>
     </section>
 
     <hr>
@@ -241,18 +254,25 @@
     <section id="privacy">
       <h2>Privacy</h2>
 
-      <p>It reads your texts, so here is the plain answer about where they go.
-      <strong>Nowhere.</strong> Everything happens on your own Mac. Nothing is uploaded. No account,
-      no server, nothing tracked.</p>
+      <p>RelationshipBuilder reads your messages, so the important question is obvious:
+      <strong>where do they go?</strong></p>
 
-      <p><strong>It won&rsquo;t write your messages for you.</strong> There is one setting that asks
-      Claude for better conversation ideas. It stays off unless you turn it on, it needs your own API
-      key, and even then it only asks what to talk about. A message worth sending isn&rsquo;t one a
-      computer wrote.</p>
+      <p class="answer">Nowhere.</p>
+
+      <p>Your message history is analyzed locally on your Mac. Nothing is uploaded to a
+      RelationshipBuilder server because there is no RelationshipBuilder server. There is no account,
+      no telemetry, and no message database somewhere else.</p>
+
+      <p><strong>RelationshipBuilder also does not write your messages for you.</strong>
+      There is an optional setting that can use Claude to generate richer conversation ideas. It is off
+      by default, requires an API key you provide yourself, and is used only to suggest things you
+      might want to talk about.</p>
+
+      <p>The words you send remain yours.</p>
 
       <div class="panel">
-        <p>Signed with an Apple Developer ID and notarized by Apple, so your Mac can check that nobody
-        has tampered with it.</p>
+        <p>RelationshipBuilder is signed with an Apple Developer ID and notarized by Apple, allowing
+        macOS to verify that the app has not been modified since it was released.</p>
       </div>
     </section>
 
@@ -262,24 +282,32 @@
       <h2>Install</h2>
 
       <ol>
-        <li>Open the file you downloaded, <code>relationshipBuilder.dmg</code>.</li>
-        <li><strong>Drag the app into your Applications folder.</strong> Don&rsquo;t run it from the window that opens, or it will forget its permissions.</li>
-        <li>Open it from Applications. Your Mac will ask whether you&rsquo;re sure about an app from the internet. Click <strong>Open</strong>. It only asks once.</li>
-        <li>The app walks you through letting it read your messages, then asks to use Contacts so you see names instead of numbers.</li>
+        <li>Open the downloaded <code>relationshipBuilder.dmg</code>.</li>
+        <li><strong>Drag RelationshipBuilder into your Applications folder.</strong> Don&rsquo;t run it directly from the disk image; macOS permissions may not persist correctly.</li>
+        <li>Open RelationshipBuilder from Applications. The first time, macOS will ask you to confirm that you want to open an app downloaded from the internet. Click <strong>Open</strong>.</li>
+        <li>RelationshipBuilder will walk you through granting access to your message history and Contacts.</li>
       </ol>
 
       <h3 id="permissions">Permissions</h3>
 
-      <p>Apple keeps your messages in a protected file, and Full Disk Access is the only key that
-      opens it. There is nothing smaller to ask for. Your Mac also won&rsquo;t let an app ask in a
-      popup, so you have to switch it on yourself.</p>
+      <p>Apple stores your Messages history in a protected part of macOS. <strong>Full Disk Access is
+      currently the permission required to read it.</strong> macOS does not provide a narrower
+      permission specifically for Messages history.</p>
+
+      <p>Apple also does not allow apps to request Full Disk Access through a normal permission popup,
+      so you need to enable it manually.</p>
+
+      <p>RelationshipBuilder walks you through the process. The short version is:</p>
 
       <div class="panel">
-        <p>The app shows you how. The short version: <strong>System Settings &rarr; Privacy &amp;
-        Security &rarr; Full Disk Access</strong>, click <strong>+</strong>, pick RelationshipBuilder
-        from Applications, make sure the switch is on, then quit and open it again. Your Mac only
-        checks when the app starts.</p>
+        <p class="path"><strong>System Settings &rarr; Privacy &amp; Security &rarr; Full Disk Access
+        &rarr; + &rarr; RelationshipBuilder</strong></p>
       </div>
+
+      <p>Make sure the switch is on, then quit and reopen RelationshipBuilder. macOS applies the
+      permission when the app launches.</p>
+
+      <p>Contacts access is used so RelationshipBuilder can show names instead of phone numbers.</p>
     </section>
 
     <hr>
@@ -287,9 +315,14 @@
     <section id="releases">
       <h2>Releases</h2>
 
-      <p>Nobody means to drift. It happens in the space between busy weeks, and you can almost always
-      still fix it, right up until you can&rsquo;t. There are only so many chances. This helps you
-      take them.</p>
+      <p>Nobody decides to drift away from someone.</p>
+
+      <p>It happens quietly. A busy week becomes a month. A message gets buried. Something you meant to
+      ask never gets asked.</p>
+
+      <p>Most of the time, the thread is still there waiting to be picked back up.</p>
+
+      <p><strong>RelationshipBuilder helps you notice it while it still is.</strong></p>
 
       <p style="margin-top:1.75rem">
         <a class="dl" href="https://github.com/JustinSteinberg/relationshipbuilder-releases/releases/latest/download/relationshipBuilder.dmg">Download for Mac</a>
@@ -299,7 +332,7 @@
       <p style="margin-top:1.5rem"><a class="inline-link" href="https://github.com/JustinSteinberg/relationshipbuilder-releases/releases">All versions and release notes</a></p>
 
       <footer>
-        <p>Made by Justin Steinberg. Signed and notarized by Apple.</p>
+        <p>Made by Justin Steinberg &middot; Signed and notarized by Apple</p>
       </footer>
     </section>
 
