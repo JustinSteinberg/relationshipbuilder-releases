@@ -7,167 +7,343 @@
 <meta name="description" content="A Mac app that surfaces the people you would regret losing touch with, and the messages you meant to answer. Everything stays on your Mac.">
 <style>
   :root {
-    --bg: #fbfaf8; --fg: #1c1b19; --muted: #63615c; --line: #e4e0da;
-    --card: #ffffff; --accent: #6d5540; --accent-fg: #fff;
-    --note-bg: #f6f3ee; --note-line: #ddd7cd;
+    --bg: #fdfcfa; --fg: #1c1b19; --muted: #67645e; --line: #e6e2db;
+    --panel: #f5f2ec; --accent: #6d5540; --accent-fg: #fdfcfa;
+    --card: #6d5540; --card-fg: #f7f2ea;
+    --nav-active-bg: #ece7de; --rail: #c9a882;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #161513; --fg: #eceae6; --muted: #a09d97; --line: #2e2c28;
-      --card: #1f1e1b; --accent: #ceac85; --accent-fg: #1a1917;
-      --note-bg: #1c1b18; --note-line: #34312c;
+      --bg: #141311; --fg: #edebe7; --muted: #a19e97; --line: #2b2925;
+      --panel: #1c1b18; --accent: #ceac85; --accent-fg: #17160f;
+      --card: #241f19; --card-fg: #f0e6d8;
+      --nav-active-bg: #24221e; --rail: #ceac85;
     }
   }
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
   body {
     margin: 0; background: var(--bg); color: var(--fg);
-    font: 17px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font: 16.5px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: 42rem; margin: 0 auto; padding: 5rem 1.5rem 6rem; }
-  h1 { font-size: 2.7rem; line-height: 1.08; letter-spacing: -0.025em; margin: 0 0 .75rem; }
-  .lede { font-size: 1.3rem; line-height: 1.45; color: var(--muted); margin: 0 0 2.5rem; letter-spacing: -0.01em; }
-  h2 { font-size: 1.05rem; text-transform: uppercase; letter-spacing: .07em;
-       color: var(--muted); margin: 3.5rem 0 1rem; font-weight: 650; }
-  p { margin: 0 0 1.1rem; }
-  .dl { display:inline-block; background: var(--accent); color: var(--accent-fg);
-        padding: .9rem 1.7rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1.05rem; }
-  .dl:hover { opacity: .88; }
-  .req { font-size: .9rem; color: var(--muted); margin-top: .8rem; }
-  .feat { border-top: 1px solid var(--line); padding: 1.15rem 0; }
-  .feat:last-of-type { border-bottom: 1px solid var(--line); }
-  .feat b { display: block; font-weight: 650; margin-bottom: .2rem; }
-  .feat span { color: var(--muted); }
-  .research { margin: 2rem 0 2.25rem; }
-  .research > p { font-size: .8rem; text-transform: uppercase; letter-spacing: .07em;
-                  color: var(--muted); font-weight: 650; margin-bottom: .9rem; }
-  .finding { border-left: 2px solid var(--note-line); padding: 0 0 0 1.1rem; margin-bottom: 1.1rem; font-size: .96rem; }
-  .finding:last-child { margin-bottom: 0; }
+  a { color: inherit; }
+
+  /* top bar */
+  .topbar {
+    position: sticky; top: 0; z-index: 20;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar-inner {
+    max-width: 78rem; margin: 0 auto; padding: .85rem 1.5rem;
+    display: flex; align-items: center; gap: .6rem;
+  }
+  .brand { font-weight: 700; letter-spacing: -0.015em; text-decoration: none; }
+  .mark {
+    display: inline-grid; place-items: center; width: 1.6rem; height: 1.6rem;
+    border-radius: 6px; background: var(--accent); color: var(--accent-fg);
+    font-size: .78rem; font-weight: 800; margin-right: .5rem; vertical-align: -.35rem;
+  }
+  .crumb { color: var(--muted); font-weight: 600; }
+  .crumb b { color: var(--fg); font-weight: 700; }
+  .topbtn {
+    margin-left: auto; background: var(--accent); color: var(--accent-fg);
+    text-decoration: none; font-weight: 650; font-size: .9rem;
+    padding: .5rem 1rem; border-radius: 7px; white-space: nowrap;
+  }
+  .topbtn:hover { opacity: .88; }
+
+  /* two column shell */
+  .shell {
+    max-width: 78rem; margin: 0 auto; padding: 0 1.5rem;
+    display: grid; grid-template-columns: 13rem minmax(0, 1fr); gap: 3.5rem;
+  }
+  .sidebar { padding: 2.75rem 0; }
+  .sidebar-sticky { position: sticky; top: 5.5rem; }
+  .sidebar a {
+    display: block; text-decoration: none; font-size: .93rem; font-weight: 650;
+    color: var(--muted); padding: .45rem .7rem; border-radius: 6px; margin-bottom: .1rem;
+  }
+  .sidebar a:hover { color: var(--fg); }
+  .sidebar a.active { background: var(--nav-active-bg); color: var(--fg); }
+  .sidebar .sub {
+    font-weight: 500; font-size: .88rem; margin-left: .7rem;
+    border-left: 2px solid transparent; border-radius: 0; padding-left: .8rem;
+  }
+  .sidebar .sub.active { background: none; border-left-color: var(--rail); }
+
+  /* main column */
+  main { padding: 2.75rem 0 6rem; max-width: 44rem; }
+  section { scroll-margin-top: 5.5rem; }
+  h1 { font-size: 2.1rem; letter-spacing: -0.025em; margin: 0 0 1.4rem; line-height: 1.15; }
+  h2 { font-size: 1.5rem; letter-spacing: -0.02em; margin: 0 0 1.3rem; }
+  h3 { font-size: 1rem; margin: 2rem 0 .5rem; }
+  p { margin: 0 0 1.15rem; }
+  hr { border: 0; border-top: 1px solid var(--line); margin: 3.25rem 0; }
+
+  /* showcase card, stands in for their logo block */
+  .card {
+    background: var(--card); color: var(--card-fg);
+    border-radius: 14px; padding: 3.25rem 2.5rem; margin: 0 0 1.75rem;
+  }
+  .card .big {
+    font-size: clamp(1.7rem, 4.2vw, 2.5rem); line-height: 1.15;
+    letter-spacing: -0.03em; font-weight: 700; margin: 0;
+  }
+  .card .sub { margin: 1rem 0 0; font-size: 1.05rem; opacity: .85; }
+  .panel {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 12px; padding: 1.4rem 1.6rem; margin: 1.6rem 0;
+  }
+  .panel p:last-child, .card p:last-child { margin-bottom: 0; }
+
+  /* findings */
+  .finding { border-left: 2px solid var(--rail); padding-left: 1.1rem; margin: 1.5rem 0; }
   .finding b { font-weight: 650; }
-  .finding cite { display: block; margin-top: .3rem; font-size: .83rem; font-style: normal; color: var(--muted); }
-  .note { background: var(--note-bg); border: 1px solid var(--note-line);
-          border-radius: 10px; padding: 1.25rem 1.5rem; margin: 1.5rem 0; font-size: .95rem; }
-  .note p:last-child { margin-bottom: 0; }
-  ol { padding-left: 1.35rem; margin: 0 0 1.1rem; }
-  ol li { margin: .55rem 0; }
-  code { font: .875em ui-monospace, SFMono-Regular, Menlo, monospace;
-         background: var(--line); padding: .15em .4em; border-radius: 4px; }
-  a { color: var(--accent); }
-  footer { margin-top: 4.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
-           color: var(--muted); font-size: .9rem; }
-  strong { font-weight: 650; }
+  .finding cite { display: block; margin-top: .4rem; font-size: .84rem; font-style: normal; color: var(--muted); }
+  .finding cite a { color: var(--muted); }
+
+  /* feature rows */
+  .feat { border-top: 1px solid var(--line); padding: 1.1rem 0; }
+  .feat:last-of-type { border-bottom: 1px solid var(--line); }
+  .feat b { display: block; font-weight: 650; margin-bottom: .15rem; }
+  .feat span { color: var(--muted); }
+
+  .dl {
+    display: inline-block; background: var(--accent); color: var(--accent-fg);
+    padding: .85rem 1.6rem; border-radius: 8px; text-decoration: none;
+    font-weight: 650; font-size: 1.02rem;
+  }
+  .dl:hover { opacity: .88; }
+  .req { font-size: .88rem; color: var(--muted); margin-top: .75rem; }
+  ol { padding-left: 1.35rem; } ol li { margin: .5rem 0; }
+  code {
+    font: .875em ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: var(--panel); border: 1px solid var(--line);
+    padding: .1em .4em; border-radius: 4px;
+  }
+  .inline-link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  footer { margin-top: 3.25rem; padding-top: 1.5rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
+
+  @media (max-width: 860px) {
+    .shell { grid-template-columns: 1fr; gap: 0; }
+    .sidebar {
+      padding: .75rem 0 0; position: sticky; top: 3.7rem; z-index: 10;
+      background: var(--bg); border-bottom: 1px solid var(--line);
+    }
+    .sidebar-sticky { position: static; display: flex; gap: .2rem; overflow-x: auto; padding-bottom: .6rem; }
+    .sidebar a { white-space: nowrap; }
+    .sidebar .sub { display: none; }
+    main { padding-top: 2rem; }
+    .card { padding: 2.25rem 1.5rem; }
+    .crumb { display: none; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <h1>If you&rsquo;re reading this,<br>it&rsquo;s not too late.</h1>
-  <p class="lede">You meant to text back. Every day, relationshipBuilder shows you the handful of
-  people you'd most regret losing touch with, and the messages you left hanging.</p>
-
-  <p>It was a busy week. The message scrolled up out of sight, replying moved to later, and later
-  became a month. You still think about them. You just never picked the thread back up.</p>
-
-  <p>Usually that's fixable. Sometimes it isn't. Nobody tells you which conversation was the last
-  one, and the thing you always meant to say stays sayable only for as long as the thread stays
-  open.</p>
-
-  <div class="research">
-    <p>What the research says</p>
-
-    <div class="finding">
-      <b>The regrets that stick around are the ones about what you didn't do.</b>
-      Things you did wrong sting more at first, but regrets of inaction outlast them, partly because
-      whatever stopped you from acting quits sounding like a good reason once time passes.
-      <cite><a href="https://pubmed.ncbi.nlm.nih.gov/7965599/">Gilovich &amp; Medvec, 1994</a>, <a href="https://online.ucpress.edu/collabra/article/8/1/37122/190272/Revisiting-the-Temporal-Pattern-of-Regret-in">replicated 2022</a></cite>
-    </div>
-
-    <div class="finding">
-      <b>You are underestimating how much it would mean to them.</b>
-      Across 13 experiments with nearly 6,000 people, an unexpected message was appreciated more than
-      the sender predicted, and the effect got stronger the further out of the blue it came. The
-      months of silence you feel awkward about are the part that makes it land.
-      <cite><a href="https://www.apa.org/pubs/journals/releases/psp-pspi0000402.pdf">Liu, Rim, Min &amp; Min, Journal of Personality and Social Psychology, 2022</a></cite>
-    </div>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#overview"><span class="mark">rb</span>relationshipBuilder</a>
+    <span class="crumb">/ <b>For Mac</b></span>
+    <a class="topbtn" href="https://github.com/JustinSteinberg/relationshipbuilder-releases/releases/latest/download/relationshipBuilder.dmg">Download</a>
   </div>
+</header>
 
-  <p><strong>relationshipBuilder is a regret minimization tool.</strong> Every day it shows you one
-  to three people worth reaching out to, with everything you need to continue the conversation
-  instead of starting it over.</p>
+<div class="shell">
 
-  <p style="margin-top:2.25rem">
-    <a class="dl" href="https://github.com/JustinSteinberg/relationshipbuilder-releases/releases/latest/download/relationshipBuilder.dmg">Download for Mac</a>
-  </p>
-  <p class="req">Free · macOS 14 or later · Apple Silicon and Intel · Requires Messages on your Mac</p>
+  <nav class="sidebar">
+    <div class="sidebar-sticky">
+      <a href="#overview" class="active">Overview</a>
+      <a href="#research">Research</a>
+      <a href="#features">What it does</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#install">Install</a>
+      <a href="#permissions" class="sub">Permissions</a>
+      <a href="#releases">Releases</a>
+    </div>
+  </nav>
 
-  <h2>What it does</h2>
+  <main>
 
-  <div class="feat"><b>Finds the messages that actually need you</b>
-  <span>Instead of scrolling back through months of threads, you see what was left hanging.
-  Questions you never answered, conversations that stopped halfway.</span></div>
+    <section id="overview">
+      <h1>Overview</h1>
 
-  <div class="feat"><b>Reminds you what you were talking about</b>
-  <span>What was going on in their life last time, and how long ago that was. So you can open with
-  something real instead of "hey, sorry for the delay."</span></div>
+      <div class="card">
+        <p class="big">If you&rsquo;re reading this,<br>it&rsquo;s not too late.</p>
+        <p class="sub">You meant to text back.</p>
+      </div>
 
-  <div class="feat"><b>Gives you insights, not scripts</b>
-  <span>Talking points and context. What to ask about, what to follow up on. What you actually say
-  is yours.</span></div>
+      <p>Every day, relationshipBuilder shows you the handful of people you&rsquo;d most regret losing
+      touch with, and the messages you left hanging.</p>
 
-  <div class="feat"><b>Sends through Messages</b>
-  <span>It connects to the Messages app you already use. Reply from here and it goes out normally.
-  No copy and paste, no second inbox, nothing for the other person to notice.</span></div>
+      <p>It was a busy week. The message scrolled up out of sight, replying moved to later, and later
+      became a month. You still think about them. You just never picked the thread back up.</p>
 
-  <div class="feat"><b>One person at a time</b>
-  <span>A card a day, not a backlog. A list of two hundred neglected friends is a guilt machine,
-  and guilt is why people stop opening the app.</span></div>
+      <p>Usually that&rsquo;s fixable. Sometimes it isn&rsquo;t. Nobody tells you which conversation
+      was the last one, and the thing you always meant to say stays sayable only for as long as the
+      thread stays open.</p>
 
-  <h2>Your messages never leave your Mac</h2>
+      <p><strong>relationshipBuilder is a regret minimization tool.</strong> It shows you one to three
+      people worth reaching out to, with everything you need to continue the conversation instead of
+      starting it over.</p>
 
-  <p>This app reads your text messages, so you deserve an unambiguous answer about where they go.
-  <strong>Nowhere.</strong> Everything is analyzed locally on your own computer. Nothing is sent
-  over the internet. There is no account, no server, and no telemetry.</p>
+      <p style="margin-top:1.9rem">
+        <a class="dl" href="https://github.com/JustinSteinberg/relationshipbuilder-releases/releases/latest/download/relationshipBuilder.dmg">Download for Mac</a>
+      </p>
+      <p class="req">Free &middot; macOS 14 or later &middot; Apple Silicon and Intel &middot; Requires Messages on your Mac</p>
+    </section>
 
-  <p><strong>It does not write messages for you.</strong> One optional setting uses the Claude API
-  for richer talking points. It is off by default, it needs an API key you provide yourself, and
-  even switched on it only ever asks for things to talk about. A message worth sending isn't one
-  that something else wrote.</p>
+    <hr>
 
-  <h2>Installing</h2>
+    <section id="research">
+      <h2>Research</h2>
 
-  <ol>
-    <li>Open the downloaded <code>relationshipBuilder.dmg</code>.</li>
-    <li><strong>Drag the app to your Applications folder.</strong> Don't run it from the disk image window, or permissions won't stick.</li>
-    <li>Open it from Applications. macOS asks whether you're sure about an app downloaded from the internet. Click <strong>Open</strong>. This happens once.</li>
-    <li>The app walks you through granting Full Disk Access, then asks to use Contacts so it can show names instead of phone numbers.</li>
-  </ol>
+      <p>The premise isn&rsquo;t just a feeling. Two findings shape how the app works.</p>
 
-  <div class="note">
-    <p><strong>Why it needs Full Disk Access</strong></p>
-    <p>Your message history lives in a file Apple protects, and Full Disk Access is the only
-    permission that reaches it. There is no narrower option to ask for. macOS also won't let an app
-    request it in a popup, so you have to turn it on yourself.</p>
-    <p>The app shows you how. Briefly: <strong>System Settings → Privacy &amp; Security → Full Disk
-    Access</strong>, click <strong>+</strong>, pick relationshipBuilder from Applications, confirm
-    the toggle is on, then quit and reopen it. macOS only checks at launch.</p>
-  </div>
+      <div class="finding">
+        <b>The regrets that stick around are the ones about what you didn&rsquo;t do.</b>
+        Things you did wrong sting more at first, but regrets of inaction outlast them, partly because
+        whatever stopped you from acting quits sounding like a good reason once time passes.
+        <cite><a href="https://pubmed.ncbi.nlm.nih.gov/7965599/">Gilovich &amp; Medvec, 1994</a>,
+        <a href="https://online.ucpress.edu/collabra/article/8/1/37122/190272/Revisiting-the-Temporal-Pattern-of-Regret-in">replicated 2022</a></cite>
+      </div>
 
-  <h2>It's not too late yet</h2>
+      <div class="finding">
+        <b>You are underestimating how much it would mean to them.</b>
+        Across 13 experiments with nearly 6,000 people, an unexpected message was appreciated more than
+        the sender predicted, and the effect got stronger the further out of the blue it came. The
+        months of silence you feel awkward about are the part that makes it land.
+        <cite><a href="https://www.apa.org/pubs/journals/releases/psp-pspi0000402.pdf">Liu, Rim, Min &amp; Min, Journal of Personality and Social Psychology, 2022</a></cite>
+      </div>
 
-  <p>Nobody drifts on purpose. It happens in the gaps between busy weeks, and it stays reversible
-  right up until it isn't. The openings are finite. This helps you use them while they're still
-  there.</p>
+      <p>So the app doesn&rsquo;t nag you about everyone, and it doesn&rsquo;t score your friendships.
+      It lowers the cost of the one thing that works, which is saying something before the window
+      closes.</p>
+    </section>
 
-  <p style="margin-top:1.75rem">
-    <a class="dl" href="https://github.com/JustinSteinberg/relationshipbuilder-releases/releases/latest/download/relationshipBuilder.dmg">Download for Mac</a>
-  </p>
-  <p class="req">Free · macOS 14 or later · Apple Silicon and Intel</p>
+    <hr>
 
-  <footer>
-    <p>Made by Justin Steinberg · Signed and notarized by Apple ·
-    <a href="https://github.com/JustinSteinberg/relationshipbuilder-releases/releases">All releases</a></p>
-  </footer>
+    <section id="features">
+      <h2>What it does</h2>
 
+      <div class="feat"><b>Finds the messages that actually need you</b>
+      <span>Instead of scrolling back through months of threads, you see what was left hanging.
+      Questions you never answered, conversations that stopped halfway.</span></div>
+
+      <div class="feat"><b>Reminds you what you were talking about</b>
+      <span>What was going on in their life last time, and how long ago that was. So you can open with
+      something real instead of &ldquo;hey, sorry for the delay.&rdquo;</span></div>
+
+      <div class="feat"><b>Gives you insights, not scripts</b>
+      <span>Talking points and context. What to ask about, what to follow up on. What you actually say
+      is yours.</span></div>
+
+      <div class="feat"><b>Sends through Messages</b>
+      <span>It connects to the Messages app you already use. Reply from here and it goes out normally.
+      No copy and paste, no second inbox, nothing for the other person to notice.</span></div>
+
+      <div class="feat"><b>One person at a time</b>
+      <span>A card a day, not a backlog. A list of two hundred neglected friends is a guilt machine,
+      and guilt is why people stop opening the app.</span></div>
+    </section>
+
+    <hr>
+
+    <section id="privacy">
+      <h2>Privacy</h2>
+
+      <p>This app reads your text messages, so you deserve an unambiguous answer about where they go.
+      <strong>Nowhere.</strong> Everything is analyzed locally on your own computer. Nothing is sent
+      over the internet. There is no account, no server, and no telemetry.</p>
+
+      <p><strong>It does not write messages for you.</strong> One optional setting uses the Claude API
+      for richer talking points. It is off by default, it needs an API key you provide yourself, and
+      even switched on it only ever asks for things to talk about. A message worth sending isn&rsquo;t
+      one that something else wrote.</p>
+
+      <div class="panel">
+        <p>The app is signed with an Apple Developer ID and notarized by Apple, which means macOS has
+        verified it hasn&rsquo;t been tampered with since it was built.</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <section id="install">
+      <h2>Install</h2>
+
+      <ol>
+        <li>Open the downloaded <code>relationshipBuilder.dmg</code>.</li>
+        <li><strong>Drag the app to your Applications folder.</strong> Don&rsquo;t run it from the disk image window, or permissions won&rsquo;t stick.</li>
+        <li>Open it from Applications. macOS asks whether you&rsquo;re sure about an app downloaded from the internet. Click <strong>Open</strong>. This happens once.</li>
+        <li>The app walks you through granting Full Disk Access, then asks to use Contacts so it can show names instead of phone numbers.</li>
+      </ol>
+
+      <h3 id="permissions">Permissions</h3>
+
+      <p>Your message history lives in a file Apple protects, and Full Disk Access is the only
+      permission that reaches it. There is no narrower option to ask for. macOS also won&rsquo;t let an
+      app request it in a popup, so you have to turn it on yourself.</p>
+
+      <div class="panel">
+        <p>The app shows you how. Briefly: <strong>System Settings &rarr; Privacy &amp; Security &rarr;
+        Full Disk Access</strong>, click <strong>+</strong>, pick relationshipBuilder from Applications,
+        confirm the toggle is on, then quit and reopen it. macOS only checks at launch.</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <section id="releases">
+      <h2>Releases</h2>
+
+      <p>Nobody drifts on purpose. It happens in the gaps between busy weeks, and it stays reversible
+      right up until it isn&rsquo;t. The openings are finite. This helps you use them while
+      they&rsquo;re still there.</p>
+
+      <p style="margin-top:1.75rem">
+        <a class="dl" href="https://github.com/JustinSteinberg/relationshipbuilder-releases/releases/latest/download/relationshipBuilder.dmg">Download for Mac</a>
+      </p>
+      <p class="req">Free &middot; macOS 14 or later &middot; Apple Silicon and Intel</p>
+
+      <p style="margin-top:1.5rem"><a class="inline-link" href="https://github.com/JustinSteinberg/relationshipbuilder-releases/releases">All versions and release notes</a></p>
+
+      <footer>
+        <p>Made by Justin Steinberg. Signed and notarized by Apple.</p>
+      </footer>
+    </section>
+
+  </main>
 </div>
+
+<script>
+  // Scroll spy. Tracks the section nearest the top of the viewport rather than
+  // whichever one is merely intersecting, so a short section sandwiched between
+  // two tall ones still takes the highlight when it is the one being read.
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidebar a'));
+  var targets = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+
+  function sync() {
+    var line = 100, best = 0, bestTop = -Infinity;
+    for (var i = 0; i < targets.length; i++) {
+      if (!targets[i]) continue;
+      var top = targets[i].getBoundingClientRect().top;
+      if (top <= line && top > bestTop) { bestTop = top; best = i; }
+    }
+    links.forEach(function (a, i) { a.classList.toggle('active', i === best); });
+  }
+
+  var queued = false;
+  addEventListener('scroll', function () {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function () { queued = false; sync(); });
+  }, { passive: true });
+  sync();
+</script>
+
 </body>
 </html>
