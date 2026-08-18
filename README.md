@@ -8,7 +8,7 @@ you would most regret losing touch with, and the messages you meant to answer.
 
 Requires macOS 14 or later. Universal (Apple Silicon and Intel). Signed and notarized.
 
-Your messages never leave your Mac. Everything is analyzed locally — no account, no
+Your messages never leave your Mac. Everything is analyzed locally. No account, no
 server, no telemetry, nothing sent over the internet. It never writes messages for you.
 Optional cloud talking points are off by default and use an API key you provide.
 

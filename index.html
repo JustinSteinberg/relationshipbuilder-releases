@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>relationshipBuilder — don't lose touch by accident</title>
-<meta name="description" content="A Mac app that surfaces the people you'd regret drifting from, and the messages you meant to answer. Everything stays on your Mac.">
+<title>relationshipBuilder</title>
+<meta name="description" content="A Mac app that surfaces the people you would regret losing touch with, and the messages you meant to answer. Everything stays on your Mac.">
 <style>
   :root {
     --bg: #fbfaf8; --fg: #1c1b19; --muted: #63615c; --line: #e4e0da;
@@ -54,19 +54,18 @@
 <body>
 <div class="wrap">
 
-  <h1>Don't lose touch by accident</h1>
-  <p class="lede">The messages you meant to answer, and the people you'd regret drifting from — surfaced before it's too late.</p>
+  <h1>You meant to text back.</h1>
+  <p class="lede">Every day, the handful of people you'd most regret losing touch with, and the messages you left hanging.</p>
 
-  <p>You meant to reply. It was a busy week, the message scrolled up out of sight, and answering
-  moved to later. Later became a month. You still think about them; you just never picked the
-  thread back up.</p>
+  <p>It was a busy week. The message scrolled up out of sight, replying moved to later, and later
+  became a month. You still think about them. You just never picked the thread back up.</p>
 
-  <p>Usually that's fixable. Sometimes it isn't — someone dies, or enough silence accumulates
-  that reaching out starts to feel impossible for both of you.</p>
+  <p>Usually that's fixable. Sometimes it isn't. Someone dies, or enough silence piles up that
+  reaching out starts to feel impossible for both of you.</p>
 
-  <p><strong>relationshipBuilder is a regret-minimization tool.</strong> Every day it shows you the
-  one to three people you'd most regret losing, along with everything you need to continue the
-  conversation instead of starting over.</p>
+  <p><strong>relationshipBuilder is a regret minimization tool.</strong> Every day it shows you one
+  to three people worth reaching out to, with everything you need to continue the conversation
+  instead of starting it over.</p>
 
   <p style="margin-top:2.25rem">
     <a class="dl" href="https://github.com/JustinSteinberg/relationshipbuilder-releases/releases/latest/download/relationshipBuilder.dmg">Download for Mac</a>
@@ -76,20 +75,20 @@
   <h2>What it does</h2>
 
   <div class="feat"><b>Finds the messages that actually need you</b>
-  <span>Rather than scrolling back through months of threads, you see what was left hanging —
-  questions you never answered, conversations that stopped mid-sentence.</span></div>
+  <span>Instead of scrolling back through months of threads, you see what was left hanging.
+  Questions you never answered, conversations that stopped halfway.</span></div>
 
   <div class="feat"><b>Reminds you what you were talking about</b>
   <span>What was going on in their life last time, and how long ago that was. So you can open with
   something real instead of "hey, sorry for the delay."</span></div>
 
-  <div class="feat"><b>Gives you conversational insights, not scripts</b>
-  <span>Talking points and context — what to ask about, what to follow up on. What you say is
-  yours.</span></div>
+  <div class="feat"><b>Gives you insights, not scripts</b>
+  <span>Talking points and context. What to ask about, what to follow up on. What you actually say
+  is yours.</span></div>
 
   <div class="feat"><b>Sends through Messages</b>
   <span>It connects to the Messages app you already use. Reply from here and it goes out normally.
-  No copy-paste, no second inbox, nothing for the other person to notice.</span></div>
+  No copy and paste, no second inbox, nothing for the other person to notice.</span></div>
 
   <div class="feat"><b>One person at a time</b>
   <span>A card a day, not a backlog. A list of two hundred neglected friends is a guilt machine,
@@ -97,32 +96,32 @@
 
   <h2>Your messages never leave your Mac</h2>
 
-  <p>This app reads your text messages, so you deserve an unambiguous answer about where they go:
-  <strong>nowhere.</strong> Everything is analyzed locally on your own computer. Nothing is sent
-  over the internet. There's no account, no server, and no telemetry.</p>
+  <p>This app reads your text messages, so you deserve an unambiguous answer about where they go.
+  <strong>Nowhere.</strong> Everything is analyzed locally on your own computer. Nothing is sent
+  over the internet. There is no account, no server, and no telemetry.</p>
 
-  <p><strong>It does not write messages for you.</strong> There's an optional setting that uses the
-  Claude API for richer talking points — it's off by default, it needs an API key you provide
-  yourself, and even switched on it only ever asks for things to talk about. A message worth
-  sending isn't one that something else wrote.</p>
+  <p><strong>It does not write messages for you.</strong> One optional setting uses the Claude API
+  for richer talking points. It is off by default, it needs an API key you provide yourself, and
+  even switched on it only ever asks for things to talk about. A message worth sending isn't one
+  that something else wrote.</p>
 
   <h2>Installing</h2>
 
   <ol>
     <li>Open the downloaded <code>relationshipBuilder.dmg</code>.</li>
-    <li><strong>Drag the app to your Applications folder.</strong> Don't run it from the disk image window — permissions won't stick.</li>
-    <li>Open it from Applications. macOS asks whether you're sure about an app downloaded from the internet; click <strong>Open</strong>. Once only.</li>
+    <li><strong>Drag the app to your Applications folder.</strong> Don't run it from the disk image window, or permissions won't stick.</li>
+    <li>Open it from Applications. macOS asks whether you're sure about an app downloaded from the internet. Click <strong>Open</strong>. This happens once.</li>
     <li>The app walks you through granting Full Disk Access, then asks to use Contacts so it can show names instead of phone numbers.</li>
   </ol>
 
   <div class="note">
     <p><strong>Why it needs Full Disk Access</strong></p>
     <p>Your message history lives in a file Apple protects, and Full Disk Access is the only
-    permission that reaches it — there's no narrower option to ask for. macOS also won't let an app
-    request it in a popup; you have to turn it on yourself.</p>
+    permission that reaches it. There is no narrower option to ask for. macOS also won't let an app
+    request it in a popup, so you have to turn it on yourself.</p>
     <p>The app shows you how. Briefly: <strong>System Settings → Privacy &amp; Security → Full Disk
     Access</strong>, click <strong>+</strong>, pick relationshipBuilder from Applications, confirm
-    the toggle is on, then quit and reopen it — macOS only checks at launch.</p>
+    the toggle is on, then quit and reopen it. macOS only checks at launch.</p>
   </div>
 
   <footer>
