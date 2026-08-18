@@ -1,4 +1,4 @@
-# relationshipBuilder — downloads
+# relationshipBuilder
 
 Public download host for **relationshipBuilder**, a Mac app that surfaces the people
 you would most regret losing touch with, and the messages you meant to answer.
