@@ -3,113 +3,131 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>relationshipBuilder — keep up with the people you care about</title>
-<meta name="description" content="A Mac app that tells you who to reach out to today. Reads your Messages history entirely on your own Mac.">
+<title>relationshipBuilder — don't lose touch by accident</title>
+<meta name="description" content="A Mac app that surfaces the people you'd regret drifting from, and the messages you meant to answer. Everything stays on your Mac.">
 <style>
   :root {
-    --bg: #fbfaf8; --fg: #1a1a1a; --muted: #5f5f5f; --line: #e2ded8;
-    --card: #ffffff; --accent: #7a5c3e; --accent-fg: #ffffff; --warn-bg: #fdf6e8; --warn-line: #e8d9b8;
+    --bg: #fbfaf8; --fg: #1c1b19; --muted: #63615c; --line: #e4e0da;
+    --card: #ffffff; --accent: #6d5540; --accent-fg: #fff;
+    --note-bg: #f6f3ee; --note-line: #ddd7cd;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #171614; --fg: #ecebe8; --muted: #a2a09b; --line: #302e2a;
-      --card: #201f1c; --accent: #c9a882; --accent-fg: #1a1a1a; --warn-bg: #241f16; --warn-line: #453a28;
+      --bg: #161513; --fg: #eceae6; --muted: #a09d97; --line: #2e2c28;
+      --card: #1f1e1b; --accent: #ceac85; --accent-fg: #1a1917;
+      --note-bg: #1c1b18; --note-line: #34312c;
     }
   }
   * { box-sizing: border-box; }
   body {
     margin: 0; background: var(--bg); color: var(--fg);
-    font: 17px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font: 17px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: 46rem; margin: 0 auto; padding: 4rem 1.5rem 6rem; }
-  h1 { font-size: 2.4rem; line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 .5rem; }
-  .tag { font-size: 1.25rem; color: var(--muted); margin: 0 0 2.5rem; }
-  h2 { font-size: 1.3rem; margin: 3rem 0 .75rem; letter-spacing: -0.01em; }
-  p, li { color: var(--fg); }
-  .dl {
-    display: inline-block; background: var(--accent); color: var(--accent-fg);
-    padding: .85rem 1.6rem; border-radius: 8px; text-decoration: none; font-weight: 600;
-  }
-  .dl:hover { opacity: .9; }
-  .req { font-size: .9rem; color: var(--muted); margin-top: .75rem; }
-  .card {
-    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
-    padding: 1.25rem 1.5rem; margin: 1.5rem 0;
-  }
-  .warn { background: var(--warn-bg); border-color: var(--warn-line); }
-  ol { padding-left: 1.4rem; }
-  ol li { margin: .6rem 0; }
-  code {
-    font: .875em ui-monospace, SFMono-Regular, Menlo, monospace;
-    background: var(--line); padding: .15em .4em; border-radius: 4px;
-  }
-  footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
+  .wrap { max-width: 42rem; margin: 0 auto; padding: 5rem 1.5rem 6rem; }
+  h1 { font-size: 2.5rem; line-height: 1.1; letter-spacing: -0.025em; margin: 0 0 .75rem; }
+  .lede { font-size: 1.3rem; line-height: 1.45; color: var(--muted); margin: 0 0 2.5rem; letter-spacing: -0.01em; }
+  h2 { font-size: 1.05rem; text-transform: uppercase; letter-spacing: .07em;
+       color: var(--muted); margin: 3.5rem 0 1rem; font-weight: 650; }
+  p { margin: 0 0 1.1rem; }
+  .dl { display:inline-block; background: var(--accent); color: var(--accent-fg);
+        padding: .9rem 1.7rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1.05rem; }
+  .dl:hover { opacity: .88; }
+  .req { font-size: .9rem; color: var(--muted); margin-top: .8rem; }
+  .feat { border-top: 1px solid var(--line); padding: 1.15rem 0; }
+  .feat:last-of-type { border-bottom: 1px solid var(--line); }
+  .feat b { display: block; font-weight: 650; margin-bottom: .2rem; }
+  .feat span { color: var(--muted); }
+  .note { background: var(--note-bg); border: 1px solid var(--note-line);
+          border-radius: 10px; padding: 1.25rem 1.5rem; margin: 1.5rem 0; font-size: .95rem; }
+  .note p:last-child { margin-bottom: 0; }
+  ol { padding-left: 1.35rem; margin: 0 0 1.1rem; }
+  ol li { margin: .55rem 0; }
+  code { font: .875em ui-monospace, SFMono-Regular, Menlo, monospace;
+         background: var(--line); padding: .15em .4em; border-radius: 4px; }
+  a { color: var(--accent); }
+  footer { margin-top: 4.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+           color: var(--muted); font-size: .9rem; }
   strong { font-weight: 650; }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <h1>relationshipBuilder</h1>
-  <p class="tag">Friendships don't end from conflict. They end from drift.</p>
+  <h1>Don't lose touch by accident</h1>
+  <p class="lede">The messages you meant to answer, and the people you'd regret drifting from — surfaced before it's too late.</p>
 
-  <p>relationshipBuilder reads your Messages history on your Mac and tells you, each day,
-  which one to three people are worth reaching out to — the ones you actually care about
-  and haven't spoken to in too long.</p>
+  <p>You meant to reply. It was a busy week, the message scrolled up out of sight, and answering
+  moved to later. Later became a month. You still think about them; you just never picked the
+  thread back up.</p>
 
-  <p>It doesn't nag you about everyone. It ranks by <strong>regret</strong>: who would you
-  be sad to lose touch with? Those people surface first.</p>
+  <p>Usually that's fixable. Sometimes it isn't — someone dies, or enough silence accumulates
+  that reaching out starts to feel impossible for both of you.</p>
 
-  <p style="margin-top:2rem">
+  <p><strong>relationshipBuilder is a regret-minimization tool.</strong> Every day it shows you the
+  one to three people you'd most regret losing, along with everything you need to continue the
+  conversation instead of starting over.</p>
+
+  <p style="margin-top:2.25rem">
     <a class="dl" href="https://github.com/JustinSteinberg/relationshipbuilder-releases/releases/latest/download/relationshipBuilder.dmg">Download for Mac</a>
   </p>
-  <p class="req">Free. macOS 14 or later · Apple Silicon and Intel · Requires Messages on your Mac</p>
+  <p class="req">Free · macOS 14 or later · Apple Silicon and Intel · Requires Messages on your Mac</p>
+
+  <h2>What it does</h2>
+
+  <div class="feat"><b>Finds the messages that actually need you</b>
+  <span>Rather than scrolling back through months of threads, you see what was left hanging —
+  questions you never answered, conversations that stopped mid-sentence.</span></div>
+
+  <div class="feat"><b>Reminds you what you were talking about</b>
+  <span>What was going on in their life last time, and how long ago that was. So you can open with
+  something real instead of "hey, sorry for the delay."</span></div>
+
+  <div class="feat"><b>Gives you conversational insights, not scripts</b>
+  <span>Talking points and context — what to ask about, what to follow up on. What you say is
+  yours.</span></div>
+
+  <div class="feat"><b>Sends through Messages</b>
+  <span>It connects to the Messages app you already use. Reply from here and it goes out normally.
+  No copy-paste, no second inbox, nothing for the other person to notice.</span></div>
+
+  <div class="feat"><b>One person at a time</b>
+  <span>A card a day, not a backlog. A list of two hundred neglected friends is a guilt machine,
+  and guilt is why people stop opening the app.</span></div>
 
   <h2>Your messages never leave your Mac</h2>
 
-  <p>This app reads your text messages, so you deserve a straight answer about where they go:
-  <strong>nowhere.</strong> All analysis happens locally on your machine. There is no account,
-  no server, no telemetry, and nothing is uploaded.</p>
+  <p>This app reads your text messages, so you deserve an unambiguous answer about where they go:
+  <strong>nowhere.</strong> Everything is analyzed locally on your own computer. Nothing is sent
+  over the internet. There's no account, no server, and no telemetry.</p>
 
-  <p>An optional setting lets you use the Claude API for conversation suggestions. It is
-  <strong>off by default</strong>, requires you to paste your own API key, and even then the app
-  only ever asks for talking points — it never writes messages for you.</p>
+  <p><strong>It does not write messages for you.</strong> There's an optional setting that uses the
+  Claude API for richer talking points — it's off by default, it needs an API key you provide
+  yourself, and even switched on it only ever asks for things to talk about. A message worth
+  sending isn't one that something else wrote.</p>
 
   <h2>Installing</h2>
 
   <ol>
     <li>Open the downloaded <code>relationshipBuilder.dmg</code>.</li>
-    <li><strong>Drag the app into your Applications folder.</strong> Don't run it from the disk image window — permissions won't stick if you do.</li>
-    <li>Open your Applications folder and double-click relationshipBuilder.</li>
-    <li>macOS will ask whether you're sure you want to open an app downloaded from the internet. Click <strong>Open</strong>. This happens once.</li>
-    <li>The app will walk you through granting Full Disk Access — see below.</li>
+    <li><strong>Drag the app to your Applications folder.</strong> Don't run it from the disk image window — permissions won't stick.</li>
+    <li>Open it from Applications. macOS asks whether you're sure about an app downloaded from the internet; click <strong>Open</strong>. Once only.</li>
+    <li>The app walks you through granting Full Disk Access, then asks to use Contacts so it can show names instead of phone numbers.</li>
   </ol>
 
-  <div class="card warn">
-    <p style="margin-top:0"><strong>Why it asks for Full Disk Access</strong></p>
-    <p>Apple stores your message history in a protected file that no app can read without your
-    explicit permission. There's no narrower permission available — Full Disk Access is the only
-    switch Apple provides, and macOS requires you to flip it yourself in System Settings rather
-    than through a popup.</p>
-    <p style="margin-bottom:0">The app shows you exactly how, but the short version: <strong>System Settings →
-    Privacy &amp; Security → Full Disk Access</strong>, click <strong>+</strong>, choose
-    relationshipBuilder from Applications, and make sure the toggle is on. Then quit and reopen
-    the app — macOS only checks this permission at launch.</p>
+  <div class="note">
+    <p><strong>Why it needs Full Disk Access</strong></p>
+    <p>Your message history lives in a file Apple protects, and Full Disk Access is the only
+    permission that reaches it — there's no narrower option to ask for. macOS also won't let an app
+    request it in a popup; you have to turn it on yourself.</p>
+    <p>The app shows you how. Briefly: <strong>System Settings → Privacy &amp; Security → Full Disk
+    Access</strong>, click <strong>+</strong>, pick relationshipBuilder from Applications, confirm
+    the toggle is on, then quit and reopen it — macOS only checks at launch.</p>
   </div>
 
-  <h2>What it looks at</h2>
-
-  <p>Message timing and frequency, who reached out last, whether a question of yours went
-  unanswered, and roughly how long it's been. It uses your Contacts to show names instead of
-  phone numbers.</p>
-
-  <p>It shows one person at a time, as a card. Not a to-do list of 200 people — that's a guilt
-  machine, not a habit.</p>
-
   <footer>
-    <p>Made by Justin Steinberg. Signed and notarized by Apple.</p>
-    <p><a href="https://github.com/JustinSteinberg/relationshipbuilder-releases/releases" style="color:var(--accent)">All releases</a></p>
+    <p>Made by Justin Steinberg · Signed and notarized by Apple ·
+    <a href="https://github.com/JustinSteinberg/relationshipbuilder-releases/releases">All releases</a></p>
   </footer>
 
 </div>
