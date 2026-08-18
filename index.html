@@ -41,13 +41,6 @@
     display: flex; align-items: center; gap: .6rem;
   }
   .brand { font-weight: 700; letter-spacing: -0.015em; text-decoration: none; }
-  .mark {
-    display: inline-grid; place-items: center; width: 1.6rem; height: 1.6rem;
-    border-radius: 6px; background: var(--accent); color: var(--accent-fg);
-    font-size: .78rem; font-weight: 800; margin-right: .5rem; vertical-align: -.35rem;
-  }
-  .crumb { color: var(--muted); font-weight: 600; }
-  .crumb b { color: var(--fg); font-weight: 700; }
   .topbtn {
     margin-left: auto; background: var(--accent); color: var(--accent-fg);
     text-decoration: none; font-weight: 650; font-size: .9rem;
@@ -92,7 +85,6 @@
     font-size: clamp(1.7rem, 4.2vw, 2.5rem); line-height: 1.15;
     letter-spacing: -0.03em; font-weight: 700; margin: 0;
   }
-  .card .sub { margin: 1rem 0 0; font-size: 1.05rem; opacity: .85; }
   .panel {
     background: var(--panel); border: 1px solid var(--line);
     border-radius: 12px; padding: 1.4rem 1.6rem; margin: 1.6rem 0;
@@ -138,7 +130,6 @@
     .sidebar .sub { display: none; }
     main { padding-top: 2rem; }
     .card { padding: 2.25rem 1.5rem; }
-    .crumb { display: none; }
   }
 </style>
 </head>
@@ -146,8 +137,7 @@
 
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="brand" href="#overview"><span class="mark">rb</span>relationshipBuilder</a>
-    <span class="crumb">/ <b>For Mac</b></span>
+    <a class="brand" href="#overview">relationshipBuilder</a>
     <a class="topbtn" href="https://github.com/JustinSteinberg/relationshipbuilder-releases/releases/latest/download/relationshipBuilder.dmg">Download</a>
   </div>
 </header>
@@ -161,7 +151,7 @@
       <a href="#features">What it does</a>
       <a href="#privacy">Privacy</a>
       <a href="#install">Install</a>
-      <a href="#permissions" class="sub">Permissions</a>
+      <a href="#permissions" class="sub" data-parent="#install">Permissions</a>
       <a href="#releases">Releases</a>
     </div>
   </nav>
@@ -173,11 +163,10 @@
 
       <div class="card">
         <p class="big">If you&rsquo;re reading this,<br>it&rsquo;s not too late.</p>
-        <p class="sub">You meant to text back.</p>
       </div>
 
-      <p>Every day, relationshipBuilder shows you the handful of people you&rsquo;d most regret losing
-      touch with, and the messages you left hanging.</p>
+      <p>You meant to text back. relationshipBuilder shows you who to reach out to, starting with
+      the people you&rsquo;d most regret losing touch with, alongside the messages you left hanging.</p>
 
       <p>It was a busy week. The message scrolled up out of sight, replying moved to later, and later
       became a month. You still think about them. You just never picked the thread back up.</p>
@@ -186,9 +175,10 @@
       was the last one, and the thing you always meant to say stays sayable only for as long as the
       thread stays open.</p>
 
-      <p><strong>relationshipBuilder is a regret minimization tool.</strong> It shows you one to three
-      people worth reaching out to, with everything you need to continue the conversation instead of
-      starting it over.</p>
+      <p><strong>relationshipBuilder is a regret minimization tool.</strong> It gives you one person
+      at a time, in the order you&rsquo;d regret losing them, with everything you need to continue the
+      conversation instead of starting it over. Keep going as long as you want. It stops when there is
+      genuinely no one left worth raising.</p>
 
       <p style="margin-top:1.9rem">
         <a class="dl" href="https://github.com/JustinSteinberg/relationshipbuilder-releases/releases/latest/download/relationshipBuilder.dmg">Download for Mac</a>
@@ -246,8 +236,9 @@
       No copy and paste, no second inbox, nothing for the other person to notice.</span></div>
 
       <div class="feat"><b>One person at a time</b>
-      <span>A card a day, not a backlog. A list of two hundred neglected friends is a guilt machine,
-      and guilt is why people stop opening the app.</span></div>
+      <span>A card, not a backlog. Reach out or skip, and the next one comes up. You decide when
+      you&rsquo;re done, but a list of two hundred neglected friends is a guilt machine, and guilt is
+      why people stop opening an app.</span></div>
     </section>
 
     <hr>
@@ -320,29 +311,70 @@
 </div>
 
 <script>
-  // Scroll spy. Tracks the section nearest the top of the viewport rather than
-  // whichever one is merely intersecting, so a short section sandwiched between
-  // two tall ones still takes the highlight when it is the one being read.
   var links = Array.prototype.slice.call(document.querySelectorAll('.sidebar a'));
   var targets = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
 
-  function sync() {
-    var line = 100, best = 0, bestTop = -Infinity;
+  // A nav click wins over the scroll position until the reader scrolls themselves.
+  //
+  // Without this, clicking a section near the end of the page highlights the wrong
+  // item: the page cannot scroll far enough to bring that section's top up to the
+  // probe line, so the "nearest heading above the line" rule keeps pointing at the
+  // previous section. Clicking Install highlighted Privacy for exactly this reason.
+  // Smooth scrolling emits scroll events of its own, so the lock has to be released
+  // by real input rather than by any scroll event.
+  var locked = false;
+
+  function setActive(i) {
+    links.forEach(function (a, k) { a.classList.toggle('active', k === i); });
+    var parent = links[i] && links[i].getAttribute('data-parent');
+    if (parent) {
+      links.forEach(function (a) {
+        if (a.getAttribute('href') === parent) a.classList.add('active');
+      });
+    }
+  }
+
+  function currentIndex() {
+    var line = 120;
+    var doc = document.documentElement;
+
+    // At the very bottom the last few sections share the viewport, and none of them
+    // may have reached the line. Fall back to the last one that has started.
+    if (window.innerHeight + window.scrollY >= doc.scrollHeight - 4) {
+      for (var j = targets.length - 1; j >= 0; j--) {
+        if (targets[j] && targets[j].getBoundingClientRect().top < window.innerHeight) return j;
+      }
+    }
+
+    var best = 0, bestTop = -Infinity;
     for (var i = 0; i < targets.length; i++) {
       if (!targets[i]) continue;
       var top = targets[i].getBoundingClientRect().top;
       if (top <= line && top > bestTop) { bestTop = top; best = i; }
     }
-    links.forEach(function (a, i) { a.classList.toggle('active', i === best); });
+    return best;
   }
+
+  links.forEach(function (a, i) {
+    a.addEventListener('click', function () { locked = true; setActive(i); });
+  });
+
+  ['wheel', 'touchmove', 'keydown'].forEach(function (ev) {
+    addEventListener(ev, function () {
+      if (!locked) return;
+      locked = false;
+      setActive(currentIndex());
+    }, { passive: true });
+  });
 
   var queued = false;
   addEventListener('scroll', function () {
-    if (queued) return;
+    if (locked || queued) return;
     queued = true;
-    requestAnimationFrame(function () { queued = false; sync(); });
+    requestAnimationFrame(function () { queued = false; setActive(currentIndex()); });
   }, { passive: true });
-  sync();
+
+  setActive(currentIndex());
 </script>
 
 </body>
