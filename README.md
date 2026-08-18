@@ -1,7 +1,9 @@
-# RelationshipBuilder
+<img src="logo.png" alt="RelationshipBuilder" width="360">
 
-Public download host for **RelationshipBuilder**, a Mac app that shows you who to text,
-starting with the people you would hate to lose.
+A secretary for your text messages, for Mac.
+
+It reads your Messages history, tells you who is waiting on you, remembers what you
+were talking about, and hands you one person at a time.
 
 **[Download the latest version](https://github.com/JustinSteinberg/relationshipbuilder-releases/releases/latest/download/relationshipBuilder.dmg)** ·
 **[Landing page](https://justinsteinberg.github.io/relationshipbuilder-releases/)**
