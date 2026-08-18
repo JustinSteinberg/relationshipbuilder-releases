@@ -38,6 +38,13 @@
   .feat:last-of-type { border-bottom: 1px solid var(--line); }
   .feat b { display: block; font-weight: 650; margin-bottom: .2rem; }
   .feat span { color: var(--muted); }
+  .research { margin: 2rem 0 2.25rem; }
+  .research > p { font-size: .8rem; text-transform: uppercase; letter-spacing: .07em;
+                  color: var(--muted); font-weight: 650; margin-bottom: .9rem; }
+  .finding { border-left: 2px solid var(--note-line); padding: 0 0 0 1.1rem; margin-bottom: 1.1rem; font-size: .96rem; }
+  .finding:last-child { margin-bottom: 0; }
+  .finding b { font-weight: 650; }
+  .finding cite { display: block; margin-top: .3rem; font-size: .83rem; font-style: normal; color: var(--muted); }
   .note { background: var(--note-bg); border: 1px solid var(--note-line);
           border-radius: 10px; padding: 1.25rem 1.5rem; margin: 1.5rem 0; font-size: .95rem; }
   .note p:last-child { margin-bottom: 0; }
@@ -64,6 +71,25 @@
   <p>Usually that's fixable. Sometimes it isn't. Nobody tells you which conversation was the last
   one, and the thing you always meant to say stays sayable only for as long as the thread stays
   open.</p>
+
+  <div class="research">
+    <p>What the research says</p>
+
+    <div class="finding">
+      <b>The regrets that stick around are the ones about what you didn't do.</b>
+      Things you did wrong sting more at first, but regrets of inaction outlast them, partly because
+      whatever stopped you from acting quits sounding like a good reason once time passes.
+      <cite><a href="https://pubmed.ncbi.nlm.nih.gov/7965599/">Gilovich &amp; Medvec, 1994</a>, <a href="https://online.ucpress.edu/collabra/article/8/1/37122/190272/Revisiting-the-Temporal-Pattern-of-Regret-in">replicated 2022</a></cite>
+    </div>
+
+    <div class="finding">
+      <b>You are underestimating how much it would mean to them.</b>
+      Across 13 experiments with nearly 6,000 people, an unexpected message was appreciated more than
+      the sender predicted, and the effect got stronger the further out of the blue it came. The
+      months of silence you feel awkward about are the part that makes it land.
+      <cite><a href="https://www.apa.org/pubs/journals/releases/psp-pspi0000402.pdf">Liu, Rim, Min &amp; Min, Journal of Personality and Social Psychology, 2022</a></cite>
+    </div>
+  </div>
 
   <p><strong>relationshipBuilder is a regret minimization tool.</strong> Every day it shows you one
   to three people worth reaching out to, with everything you need to continue the conversation
