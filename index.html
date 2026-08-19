@@ -85,6 +85,23 @@
     font-size: clamp(1.7rem, 4.2vw, 2.45rem); line-height: 1.15;
     letter-spacing: -0.03em; font-weight: 700; margin: 0;
   }
+  /* Hidden until JavaScript decides this is not a Mac. Progressive on purpose: if
+     the script fails, the ordinary download button is what remains. */
+  .notmac { display: none; }
+  .notmac.show { display: block; }
+  .notmac-inner {
+    border: 1px solid var(--line); background: var(--panel);
+    border-radius: 12px; padding: 1.3rem 1.5rem; margin: 0 0 1.5rem;
+  }
+  .notmac-inner b { display: block; margin-bottom: .35rem; }
+  .notmac-inner p { margin: 0 0 1rem; color: var(--muted); font-size: .96rem; }
+  .copybtn {
+    background: var(--accent); color: var(--accent-fg); border: 0;
+    font: inherit; font-weight: 650; font-size: .95rem;
+    padding: .7rem 1.3rem; border-radius: 8px; cursor: pointer;
+  }
+  .copybtn:hover { opacity: .9; }
+  .copied { margin-left: .7rem; font-size: .9rem; color: var(--muted); }
   .answer {
     font-size: 1.9rem; font-weight: 700; letter-spacing: -0.025em;
     color: var(--accent); margin: 1.5rem 0 1.6rem;
@@ -180,6 +197,17 @@
       <p><strong>RelationshipBuilder helps you pick those threads back up.</strong> It looks through
       your Messages history, finds the conversations that may be worth returning to, reminds you what
       you were talking about, and gives you one person at a time.</p>
+
+      <div class="notmac" id="notmac">
+        <div class="notmac-inner">
+          <b>RelationshipBuilder runs on a Mac.</b>
+          <p>It reads the Messages history stored on a Mac, which is something Apple
+          doesn&rsquo;t allow apps to do on a phone. Send yourself the link and open it
+          on your Mac.</p>
+          <button class="copybtn" id="copylink" type="button">Copy link</button>
+          <span class="copied" id="copied" hidden>Copied</span>
+        </div>
+      </div>
 
       <p style="margin-top:1.9rem">
         <a class="dl" href="https://github.com/JustinSteinberg/relationshipbuilder-releases/releases/latest/download/relationshipBuilder.dmg">Download for Mac</a>
@@ -403,6 +431,44 @@
   }, { passive: true });
 
   setActive(currentIndex());
+
+  // Tell phones before they download something they cannot open.
+  //
+  // iOS will download a .dmg without complaint and then leave it in Files as a dead
+  // end: nothing on iOS can mount a disk image, and no error explains why. This page
+  // gets shared by text more than by search, because the app is about texting, so a
+  // phone is often the first place anyone sees it.
+  //
+  // iPadOS reports itself as MacIntel, so the user agent alone is not enough; the
+  // touch-point count is what separates an iPad from a Mac.
+  (function () {
+    var ua = navigator.userAgent;
+    var iPadAsMac = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+    var isApplePhone = /iPhone|iPad|iPod/.test(ua) || iPadAsMac;
+    var isMac = /Macintosh|Mac OS X/.test(ua) && !isApplePhone;
+    if (isMac) return;
+
+    var notice = document.getElementById('notmac');
+    if (notice) notice.classList.add('show');
+
+    var button = document.getElementById('copylink');
+    var flag = document.getElementById('copied');
+    if (!button) return;
+    button.addEventListener('click', function () {
+      var url = location.href.split('#')[0];
+      // Clipboard access needs a secure context and can be refused outright, so
+      // failure has to leave the reader with the link rather than with nothing.
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function () {
+          if (flag) flag.hidden = false;
+        }, function () {
+          button.textContent = url;
+        });
+      } else {
+        button.textContent = url;
+      }
+    });
+  })();
 </script>
 
 </body>
