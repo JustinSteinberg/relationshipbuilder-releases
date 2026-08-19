@@ -42,12 +42,17 @@
   .brand {
     display: flex; align-items: center; gap: .55rem;
     font-weight: 700; letter-spacing: -0.015em; text-decoration: none;
+    /* min-width lets the label truncate instead of forcing the row wider than the
+       screen; the mark and the button are exempt from shrinking entirely, because a
+       squashed logo and a squashed button are what "squished" actually looked like.
+       Flex items shrink by default, and both were inheriting that. */
+    min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .brand img { width: 30px; height: 30px; display: block; }
+  .brand img { width: 30px; height: 30px; display: block; flex-shrink: 0; }
   .topbtn {
     margin-left: auto; background: var(--accent); color: var(--accent-fg);
     text-decoration: none; font-weight: 650; font-size: .9rem;
-    padding: .5rem 1rem; border-radius: 7px; white-space: nowrap;
+    padding: .5rem 1rem; border-radius: 7px; white-space: nowrap; flex-shrink: 0;
   }
   .topbtn:hover { opacity: .9; }
 
@@ -141,8 +146,12 @@
 
   @media (max-width: 860px) {
     .shell { grid-template-columns: 1fr; gap: 0; }
+    /* Was sticky at a hardcoded 3.6rem, a guess at the header's height that stopped
+       matching as soon as the header changed size, leaving the nav overlapping it or
+       floating below it. Two stacked sticky bars also cost a lot of a phone screen
+       for a page this short, so the nav simply scrolls away now. */
     .sidebar {
-      padding: .75rem 0 0; position: sticky; top: 3.6rem; z-index: 10;
+      padding: .75rem 0 0; position: static;
       background: var(--bg); border-bottom: 1px solid var(--line);
     }
     .sidebar-sticky { position: static; display: flex; gap: .2rem; overflow-x: auto; padding-bottom: .6rem; }
@@ -150,6 +159,19 @@
     .sidebar .sub { display: none; }
     main { padding-top: 2rem; }
     .card { padding: 2.25rem 1.5rem; }
+  }
+
+  @media (max-width: 560px) {
+    .topbar-inner { padding: .65rem 1.1rem; }
+    .brand { font-size: .95rem; gap: .45rem; }
+    .brand img { width: 25px; height: 25px; }
+    .topbtn { font-size: .85rem; padding: .45rem .85rem; }
+    .shell { padding: 0 1.1rem; }
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.35rem; }
+    .card { padding: 1.9rem 1.25rem; }
+    .answer { font-size: 1.6rem; }
+    .notmac-inner, .panel { padding: 1.1rem 1.2rem; }
   }
 </style>
 </head>
